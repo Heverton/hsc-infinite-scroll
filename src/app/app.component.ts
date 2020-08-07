@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
     const index = HscScrollComponent.getIndex(this.documentos, item);
 
     if (!item.conteudo) {
-      this.documentos[index].conteudo = this.location.prepareExternalUrl('/assets/2.pdf');
+      item.conteudo = this.location.prepareExternalUrl('/assets/2.pdf');
     }
 
     // Aguarda 3s para providência a exibição
