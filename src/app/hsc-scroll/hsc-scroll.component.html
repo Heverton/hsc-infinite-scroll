@@ -12,7 +12,7 @@
 
     <div class="grupo-visual" id="{{ item.id }}" *ngFor="let item of recData" (mouseenter)="notificarDestacarItem(item)"  >
         <div class="descicao-visual" (click)="exibirConteudo(item)" >
-            ID {{ item.id }} << CLIQUE AQUI PARA EXIBIR O DOCUMENTO >> {{item.isExibirConteudo}} 
+            ===: ID {{ item.id }} - DESCRIÇÃO DO DOCUMENTO :===
         </div>
         <div class="item-visual">
           <div class="spinner-visual" *ngIf="!item.isExibirConteudo" ></div>

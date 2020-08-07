@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges, HostListener } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ItemScroll } from './hsc-scroll-item.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { ItemScroll } from './hsc-scroll-item.component';
 })
 export class HscScrollComponent implements OnInit, OnChanges {
 
-  @Input() recData: ItemScroll[];
+  @Input() recData: ItemScroll[] = [new ItemScroll(0)];
   @Input() recItemSelecionado: ItemScroll;
   @Input() recSelecinaClass = '';
   @Input() valuesCacheSize = 5;
@@ -23,19 +23,50 @@ export class HscScrollComponent implements OnInit, OnChanges {
 
   private itemDestaque: ItemScroll;
   private arrayvisualizacao: ItemScroll[] = [];
-
   private posicaoIniDown = 0;
   private posicaoFimDown = 0;
-
   private posicaoIniUp = 0;
   private posicaoFimUp = 0;
-
   private reiniciarContagemUp = false;
 
   constructor(private location: Location) {}
 
   /**
-   * Faz um carga inicial com os dados.
+   * Metodo que definine o item que terá um destaque 'isDestaque' ou não.
+   *
+   * @param itens ItemScroll[]
+   * @param index number
+   * @param isDestaque boolean
+   */
+  public static recolherVisualizacaoDestaqueItem(itens: ItemScroll[], index: number, isDestaque: boolean): void {
+    itens.forEach(it => {
+      if (it.isDestaque) {
+        it.isDestaque = false;
+      }
+    });
+
+    itens[index].isDestaque = isDestaque;
+  }
+
+  /**
+   * Metodo responsavel por coletar a informação da posição do objeto na lista.
+   *
+   * @param itens ItemScroll[]
+   * @param item ItemScroll
+   */
+  public static getIndex(itens: ItemScroll[], item: ItemScroll): number {
+    let index = 0;
+    for (let i = 0; i <= itens.length; i++) {
+      if (item.id === itens[i].id) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
+  /**
+   * Usado para inicializar a lista com a primeira opção selecionada.
    */
   public ngOnInit(): void {
     (window as any).pdfWorkerSrc = this.location.prepareExternalUrl('/assets/pdf.worker.js');
@@ -49,32 +80,39 @@ export class HscScrollComponent implements OnInit, OnChanges {
     const pFimIndexMenos = pIndex - this.valuesCacheSize;
     const pFimIndexMais = pIndex + this.valuesCacheSize;
 
-    this.recolherVisualizacaoAll(this.recData, false);
-    this.recolherVisualizacaoRepetir(this.recData, pFimIndexMenos, pFimIndexMais, true);
-    this.atribuirFocoEscolhaScrollId(item);
+    this.recolherVisualizacaoTodos(this.recData, false, item);
+    this.recolherVisualizacaoPeriodo(this.recData, pFimIndexMenos, pFimIndexMais, true);
+    this.atribuirFocoEscolhaItemVisualizacao(item);
   }
 
   /**
-   * Coleta informações de escolha de item.
+   * Escuta as informações de escolha de item.
    *
    * @param changes SimpleChanges
    */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.recItemSelecionado && changes.recItemSelecionado.currentValue) {
       if (changes.recItemSelecionado.currentValue === this.recItemSelecionado) {
-        const item: ItemScroll = this.recItemSelecionado;
-        const pIndex = HscScrollComponent.getIndex(this.recData, item);
-
-        const pFimIndexMenos = pIndex - this.valuesCacheSize;
-        const pFimIndexMais = pIndex + this.valuesCacheSize;
-
-        this.recolherVisualizacaoAll(this.recData, false);
-        this.recolherVisualizacaoRepetir(this.recData, pFimIndexMenos, pFimIndexMais, true);
-        this.atribuirFocoEscolhaScrollId(item);
-
-        HscScrollComponent.recolherVisualizacaoDestaqueItem(this.recData, pIndex, true);
+        this.controlarFluxoMudanca(this.recItemSelecionado);
       }
     }
+  }
+
+  /**
+   * Controla o recebimento das mudança no objeto selecionado.
+   *
+   * @param item ItemScroll
+   */
+  private controlarFluxoMudanca(item: ItemScroll): void {
+    const pIndex = HscScrollComponent.getIndex(this.recData, item);
+    const pFimIndexMenos = pIndex - this.valuesCacheSize;
+    const pFimIndexMais = pIndex + this.valuesCacheSize;
+
+    this.recolherVisualizacaoTodos(this.recData, false);
+    this.recolherVisualizacaoPeriodo(this.recData, pFimIndexMenos, pFimIndexMais, true);
+    this.atribuirFocoEscolhaItemVisualizacao(item);
+
+    HscScrollComponent.recolherVisualizacaoDestaqueItem(this.recData, pIndex, true);
   }
 
   public exibirConteudo(item: ItemScroll): void {
@@ -85,7 +123,6 @@ export class HscScrollComponent implements OnInit, OnChanges {
    * Realiza o mover dos dados para baixo.
    */
   public onScrollDown(): void {
-
     const isPosicaoIni = (this.posicaoIniDown < this.recData.length);
     const isPosicaoFim = (this.posicaoFimDown < this.recData.length);
 
@@ -120,7 +157,6 @@ export class HscScrollComponent implements OnInit, OnChanges {
   }
 
   public onScrollUp(): void {
-
     const isPosicaoIni = (this.posicaoIniUp < this.recData.length) && this.posicaoIniDown !== 0;
     const isPosicaoFim = (this.posicaoFimUp < this.recData.length) && this.posicaoIniDown !== 0;
 
@@ -146,7 +182,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     }
   }
 
-  private scrollUp(posicaoIni, posicaoFim): void {
+  private scrollUp(posicaoIni: number, posicaoFim: number): void {
     for (let i = posicaoFim; i >= posicaoIni; --i) {
       const itemNext = this.recData[i];
       if (itemNext !== undefined) {
@@ -155,10 +191,14 @@ export class HscScrollComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Devolve a notificação para o objeto pai.
+   *
+   * @param item ItemScroll
+   */
   public notificarDestacarItem(item: ItemScroll): void {
     const pIndex = HscScrollComponent.getIndex(this.recData, item);
-    const isProximo = this.verificarSeProximoDentroLimite(this.recData, pIndex);
-
+    const isProximo = this.verificarSeProximoVisivelDentroLimite(this.recData, pIndex);
     // 1) Verificar se o itens de destaque foi atribuido é e diferente do requisitado.
     // 2) Verificar se é necessário novos itens no 'isProximo'
     if ((this.itemDestaque === undefined || this.itemDestaque.id !== item.id)  || isProximo) {
@@ -169,12 +209,11 @@ export class HscScrollComponent implements OnInit, OnChanges {
         const pFimIndexMenos = pIndex - this.valuesCacheSize;
         const pFimIndexMais = pIndex + this.valuesCacheSize;
         // Remove a visualização dos itens.
-        this.recolherVisualizacaoAll(this.recData, false, item);
+        this.recolherVisualizacaoTodos(this.recData, false, item);
         // Atribui a visualização dos itens do período para 'true'
-        this.recolherVisualizacaoRepetir(this.recData, pFimIndexMenos, pFimIndexMais, true);
+        this.recolherVisualizacaoPeriodo(this.recData, pFimIndexMenos, pFimIndexMais, true);
       }
-
-      // Emitir notificacao
+      // Emitir notificacao item em destaque
       this.aoItemSelecionado.emit(item);
     }
   }
@@ -187,10 +226,10 @@ export class HscScrollComponent implements OnInit, OnChanges {
    * @param itens ItemScroll[]
    * @param pIndex number
    */
-  private verificarSeProximoDentroLimite(itensGerais: ItemScroll[], pIndex: number): boolean {
-    // Se a X posição do array geral é igua a última posição de visualização que é igual a posição pIndex
+  private verificarSeProximoVisivelDentroLimite(itensGerais: ItemScroll[], pIndex: number): boolean {
+    // Se a X posição do array geral é igual a última posição de visualização que é igual a posição pIndex
     const resulDown = (itensGerais[pIndex + 1]?.isExibirConteudo === false);
-    // Se a X posição do array geral é igua a primeira posição de visualização que é igual a posição pIndex
+    // Se a X posição do array geral é igual a primeira posição de visualização que é igual a posição pIndex
     const resulUp = (itensGerais[pIndex - 1]?.isExibirConteudo === false);
 
     if (resulDown || resulUp) {
@@ -205,7 +244,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
    *
    * @param el: string
    */
-  private atribuirFocoEscolhaScrollId(item: ItemScroll): void {
+  private atribuirFocoEscolhaItemVisualizacao(item: ItemScroll): void {
     // Não existe o elemento carregado na visualização
     if (document.getElementById(String(item.id)) == null) {
       this.visualizacaoFocoEscolha(item);
@@ -247,7 +286,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     this.scrollDown(this.posicaoIniDown, this.posicaoFimDown);
   }
 
-  private recolherVisualizacaoAll(itens: ItemScroll[], isExibirVisualizacao: boolean, itemExclude?: ItemScroll): void {
+  private recolherVisualizacaoTodos(itens: ItemScroll[], isExibirVisualizacao: boolean, itemExclude?: ItemScroll): void {
     itens.forEach(it => {
       if (it.isExibirConteudo && (itemExclude !== undefined && itemExclude.id !== it.id)) {
         it.isExibirConteudo = isExibirVisualizacao;
@@ -255,35 +294,16 @@ export class HscScrollComponent implements OnInit, OnChanges {
     });
   }
 
-  private recolherVisualizacaoRepetir(itens: ItemScroll[], iniIndex: number, fimIndex: number, isExibirVisualizacao: boolean): void {
+  private recolherVisualizacaoPeriodo(itens: ItemScroll[], iniIndex: number, fimIndex: number, isExibirVisualizacao: boolean): void {
     const itensExibirConteudo: ItemScroll[] = [];
     for (let i = iniIndex; i <= fimIndex; i++) {
       if (itens[i] !== undefined) {
         itensExibirConteudo.push(itens[i]);
       }
     }
-    // Requisitar novos dados ao objeto.
-    this.aoItemNextItem.emit(itensExibirConteudo);
-  }
-
-  public static recolherVisualizacaoDestaqueItem(itens: ItemScroll[], index: number, isDestaque: boolean): void {
-    itens.forEach(it => {
-      if (it.isDestaque) {
-        it.isDestaque = false;
-      }
-    });
-
-    itens[index].isDestaque = isDestaque;
-  }
-
-  public static getIndex(itens: ItemScroll[], item: ItemScroll): number {
-    let index = 0;
-    for (let i = 0; i <= itens.length; i++) {
-      if (item.id === itens[i].id) {
-        index = i;
-        break;
-      }
+    if (itensExibirConteudo.length > 0) {
+      // Requisitar novos dados ao objeto.
+      this.aoItemNextItem.emit(itensExibirConteudo);
     }
-    return index;
   }
 }
