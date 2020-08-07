@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemScroll } from './pje-scroll/pje-scroll-item.component';
-import { PjeScrollComponent } from './pje-scroll/pje-scroll.component';
+import { ItemScroll } from './hsc-scroll/hsc-scroll-item.component';
+import { HscScrollComponent } from './hsc-scroll/hsc-scroll.component';
 import { Location } from '@angular/common';
 
 @Component({
@@ -46,8 +46,8 @@ export class AppComponent implements OnInit {
   }
 
   receberItemSelecionado(item: ItemScroll) {
-    const index = PjeScrollComponent.getIndex(this.documentos, item);
-    PjeScrollComponent.recolherVisualizacaoDestaqueItem(this.documentos, index, true);
+    const index = HscScrollComponent.getIndex(this.documentos, item);
+    HscScrollComponent.recolherVisualizacaoDestaqueItem(this.documentos, index, true);
   }
 
   receberNextItem(itens: ItemScroll[]) {
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
   }
 
   private buscarItem(item: ItemScroll): ItemScroll {
-    const index = PjeScrollComponent.getIndex(this.documentos, item);
+    const index = HscScrollComponent.getIndex(this.documentos, item);
 
     if (!item.conteudo) {
       this.documentos[index].conteudo = this.location.prepareExternalUrl('/assets/2.pdf');

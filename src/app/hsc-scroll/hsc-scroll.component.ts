@@ -1,13 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges, HostListener } from '@angular/core';
-import { ItemScroll } from './pje-scroll-item.component';
+import { ItemScroll } from './hsc-scroll-item.component';
 
 @Component({
-  selector: 'app-pje-scroll',
-  templateUrl: './pje-scroll.component.html',
-  styleUrls: ['./pje-scroll.component.css']
+  selector: 'app-hsc-scroll',
+  templateUrl: './hsc-scroll.component.html',
+  styleUrls: ['./hsc-scroll.component.css']
 })
-export class PjeScrollComponent implements OnInit, OnChanges {
+export class HscScrollComponent implements OnInit, OnChanges {
 
   @Input() recData: ItemScroll[];
   @Input() recItemSelecionado: ItemScroll;

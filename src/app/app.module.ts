@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { PjeScrollComponent } from './pje-scroll/pje-scroll.component';
+import { HscScrollComponent } from './hsc-scroll/hsc-scroll.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PjeScrollComponent
+    HscScrollComponent
   ],
   imports: [
     BrowserModule,
