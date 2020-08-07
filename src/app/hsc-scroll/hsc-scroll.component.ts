@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ItemScroll } from './hsc-scroll-item.component';
 
 @Component({
   selector: 'app-hsc-scroll',
   templateUrl: './hsc-scroll.component.html',
-  styleUrls: ['./hsc-scroll.component.css']
+  styleUrls: ['./hsc-scroll.component.css'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HscScrollComponent implements OnInit, OnChanges {
 
@@ -113,6 +114,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     this.atribuirFocoEscolhaItemVisualizacao(item);
 
     HscScrollComponent.recolherVisualizacaoDestaqueItem(this.recData, pIndex, true);
+    this.itemDestaque = item;
   }
 
   public exibirConteudo(item: ItemScroll): void {

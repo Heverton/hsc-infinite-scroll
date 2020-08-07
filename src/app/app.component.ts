@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
 
   constructor(public location: Location) {}
 
+  // Dados de teste
   ngOnInit(): void {
-
     const list = [];
     list[0] = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
     list[1] = this.location.prepareExternalUrl('/assets/1.pdf');
@@ -41,21 +41,37 @@ export class AppComponent implements OnInit {
     }, 10000);
   }
 
+  /**
+   * Notificar o scroll que quero visualizar esse item
+   * 
+   * @param item ItemScroll
+   */
   selecionadoItem(item: ItemScroll) {
     this.itemSelecionado = this.buscarItem(item);
   }
 
+  /**
+   * Receber item selecionado.
+   * 
+   * @param item ItemScroll 
+   */
   receberItemSelecionado(item: ItemScroll) {
     const index = HscScrollComponent.getIndex(this.documentos, item);
     HscScrollComponent.recolherVisualizacaoDestaqueItem(this.documentos, index, true);
   }
 
+  /**
+   * Receber requisição de novos dados.
+   *
+   * @param itens ItemScroll[]
+   */
   receberNextItem(itens: ItemScroll[]) {
     itens.forEach(it => {
       this.buscarItem(it);
     });
   }
 
+  // Local de busca do serviço
   private buscarItem(item: ItemScroll): ItemScroll {
     const index = HscScrollComponent.getIndex(this.documentos, item);
 
@@ -63,6 +79,7 @@ export class AppComponent implements OnInit {
       this.documentos[index].conteudo = this.location.prepareExternalUrl('/assets/2.pdf');
     }
 
+    // Aguarda 3s para providência a exibição
     setTimeout(() => {
       this.documentos[index].isExibirConteudo = true;
     }, 3000);

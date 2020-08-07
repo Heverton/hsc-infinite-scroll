@@ -1,6 +1,7 @@
 export class ItemScroll {
     id: number;
     conteudo: string;
+    // Liga ou desliga o spinner
     isExibirConteudo: boolean;
     isDestaque: boolean;
 
