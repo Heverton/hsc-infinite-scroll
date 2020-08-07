@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   /**
    * Receber item selecionado.
    * 
-   * @param item ItemScroll 
+   * @param item ItemScroll
    */
   receberItemSelecionado(item: ItemScroll) {
     const index = HscScrollComponent.getIndex(this.documentos, item);

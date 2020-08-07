@@ -80,7 +80,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     const pFimIndexMenos = pIndex - this.valuesCacheSize;
     const pFimIndexMais = pIndex + this.valuesCacheSize;
 
-    this.recolherVisualizacaoTodos(this.recData, false, item);
+    this.recolherVisualizacaoTodos(this.recData, false);
     this.recolherVisualizacaoPeriodo(this.recData, pFimIndexMenos, pFimIndexMais, true);
     this.atribuirFocoEscolhaItemVisualizacao(item);
   }
@@ -289,7 +289,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
 
   private recolherVisualizacaoTodos(itens: ItemScroll[], isExibirVisualizacao: boolean, itemExclude?: ItemScroll): void {
     itens.forEach(it => {
-      if (it.isExibirConteudo && (itemExclude !== undefined && itemExclude.id !== it.id)) {
+      if (it.isExibirConteudo && itemExclude?.id !== it.id) {
         it.isExibirConteudo = isExibirVisualizacao;
       }
     });
