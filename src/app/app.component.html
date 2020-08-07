@@ -1,0 +1,16 @@
+<div class="grupo">
+    <div class="cell-lista" >
+        <span *ngFor="let item of documentos" >
+          <button [ngStyle]="{'color': item.isDestaque ? 'red' : ''}" (click)="selecionadoItem(item)">CLICK AQUI PARA ESCOLHE UMA OPÇÃO: {{item.id}}</button>
+          <br>
+        </span>
+    </div>
+    <app-pje-scroll class="cell-visualizador"
+      [recData]="documentos" 
+      [recItemSelecionado]="itemSelecionado" 
+      [recSelecinaClass]="classSelecionada" 
+      [valuesCacheSize]="5"
+      (aoItemSelecionado)="receberItemSelecionado($event)"
+      (aoItemNextItem)="receberNextItem($event)"
+    ></app-pje-scroll>
+</div>

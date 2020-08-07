@@ -1,0 +1,44 @@
+.infiniteScroll {
+}
+
+.grupo-visual {
+    display: flex;
+    flex-direction: column; 
+}
+
+.descicao-visual {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.item-visual{
+    height: 50em;
+}
+
+.spinner-visual {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    padding-left: 40em;
+}
+.spinner-visual:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #cef;
+    border-color: #cef transparent #cef transparent;
+    animation: spinner-visual 1.2s linear infinite;
+}
+@keyframes spinner-visual {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+  
+  

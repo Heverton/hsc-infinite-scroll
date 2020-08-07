@@ -1,0 +1,18 @@
+# Diretorio especificos do projeto
+.project
+.classpath
+.settings/
+/bin/
+.sonar
+/target
+.factorypath
+.directory
+
+.idea
+*.iml
+*/rebel.xml
+.vscode
+rebel.xml
+.project
+.settings
+/node_modules/

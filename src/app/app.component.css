@@ -1,0 +1,17 @@
+.grupo {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 55em;
+}
+.cell-lista {
+  display: block;
+  width: 25em;
+  overflow-x: visible;
+  overflow-y: scroll;
+}
+.cell-visualizador {
+  display: block;
+  width: 100em;
+  overflow-x: visible;
+  overflow-y: scroll;
+}
