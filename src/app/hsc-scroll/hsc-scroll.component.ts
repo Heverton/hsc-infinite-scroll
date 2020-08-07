@@ -44,7 +44,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     this.posicaoFimDown = this.infScrollUpDistance;
 
     const item: ItemScroll = this.recData[0];
-    const pIndex = PjeScrollComponent.getIndex(this.recData, item);
+    const pIndex = HscScrollComponent.getIndex(this.recData, item);
 
     const pFimIndexMenos = pIndex - this.valuesCacheSize;
     const pFimIndexMais = pIndex + this.valuesCacheSize;
@@ -63,7 +63,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     if (changes.recItemSelecionado && changes.recItemSelecionado.currentValue) {
       if (changes.recItemSelecionado.currentValue === this.recItemSelecionado) {
         const item: ItemScroll = this.recItemSelecionado;
-        const pIndex = PjeScrollComponent.getIndex(this.recData, item);
+        const pIndex = HscScrollComponent.getIndex(this.recData, item);
 
         const pFimIndexMenos = pIndex - this.valuesCacheSize;
         const pFimIndexMais = pIndex + this.valuesCacheSize;
@@ -72,7 +72,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
         this.recolherVisualizacaoRepetir(this.recData, pFimIndexMenos, pFimIndexMais, true);
         this.atribuirFocoEscolhaScrollId(item);
 
-        PjeScrollComponent.recolherVisualizacaoDestaqueItem(this.recData, pIndex, true);
+        HscScrollComponent.recolherVisualizacaoDestaqueItem(this.recData, pIndex, true);
       }
     }
   }
@@ -156,7 +156,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
   }
 
   public notificarDestacarItem(item: ItemScroll): void {
-    const pIndex = PjeScrollComponent.getIndex(this.recData, item);
+    const pIndex = HscScrollComponent.getIndex(this.recData, item);
     const isProximo = this.verificarSeProximoDentroLimite(this.recData, pIndex);
 
     // 1) Verificar se o itens de destaque foi atribuido é e diferente do requisitado.
@@ -227,7 +227,7 @@ export class HscScrollComponent implements OnInit, OnChanges {
     // Usado para orientar o scrollUp quando requisitado na proxima vez.
     this.reiniciarContagemUp = true;
 
-    const index = PjeScrollComponent.getIndex(this.recData, item);
+    const index = HscScrollComponent.getIndex(this.recData, item);
     // Criar posições com valores de pVariavel - incremento Ex. 30 - 5 = 25
     this.posicaoIniUp = index - this.infScrollUpDistance;
     // Criar posições com valores de pVariavel - 1 Ex. 30 - 1 = 29

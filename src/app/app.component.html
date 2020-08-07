@@ -5,12 +5,12 @@
           <br>
         </span>
     </div>
-    <app-pje-scroll class="cell-visualizador"
+    <app-hsc-scroll class="cell-visualizador"
       [recData]="documentos" 
       [recItemSelecionado]="itemSelecionado" 
       [recSelecinaClass]="classSelecionada" 
       [valuesCacheSize]="5"
       (aoItemSelecionado)="receberItemSelecionado($event)"
       (aoItemNextItem)="receberNextItem($event)"
-    ></app-pje-scroll>
+    ></app-hsc-scroll>
 </div>
