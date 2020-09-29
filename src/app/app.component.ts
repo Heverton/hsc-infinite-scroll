@@ -28,17 +28,17 @@ export class AppComponent implements OnInit {
     // list[6] = this.location.prepareExternalUrl('/assets/6.pdf');
 
     this.documentos.push(new ItemScroll(0, list[0], true, true));
-    for ( let cont = 1; cont < 200 ; cont++) {
+    for ( let cont = 1; cont < 20 ; cont++) {
       const n = Math.floor(Math.random() * 7);
       this.documentos.push(new ItemScroll(cont));
     }
 
-    setTimeout(() => {
-      for ( let cont = 200; cont < 400 ; cont++) {
-        const n = Math.floor(Math.random() * 7);
-        this.documentos.push(new ItemScroll(cont, list[2]));
-      }
-    }, 10000);
+    // setTimeout(() => {
+    //   for ( let cont = 200; cont < 400 ; cont++) {
+    //     const n = Math.floor(Math.random() * 7);
+    //     this.documentos.push(new ItemScroll(cont, list[2]));
+    //   }
+    // }, 10000);
   }
 
   /**

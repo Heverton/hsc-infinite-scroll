@@ -69,7 +69,8 @@ export class HscScrollComponent implements OnInit, OnChanges {
    * Usado para inicializar a lista com a primeira opção selecionada.
    */
   public ngOnInit(): void {
-    (window as any).pdfWorkerSrc = this.location.prepareExternalUrl('/assets/pdf.worker.js');
+    // Usado apenas em produção para o controle dos worker pelo componente
+    // (window as any).pdfWorkerSrc = this.location.prepareExternalUrl('/assets/pdf.worker.js');
 
     this.posicaoFimUp = this.infScrollUpDistance;
     this.posicaoFimDown = this.infScrollUpDistance;
@@ -144,6 +145,9 @@ export class HscScrollComponent implements OnInit, OnChanges {
     }
 
     if (isPosicaoIni || isPosicaoFim) {
+      console.log('posicaoIniDown',this.posicaoIniDown);
+      console.log('posicaoFimDown',this.posicaoFimDown);
+
       this.scrollDown(this.posicaoIniDown, this.posicaoFimDown);
     }
   }
@@ -178,6 +182,11 @@ export class HscScrollComponent implements OnInit, OnChanges {
     }
 
     if (isPosicaoIni || isPosicaoFim || this.reiniciarContagemUp) {
+      console.log('posicaoIniUp',this.posicaoIniUp);
+      console.log('posicaoFimUp',this.posicaoFimUp);
+      console.log('reiniciarContagemUp',this.reiniciarContagemUp);
+
+
       this.reiniciarContagemUp = false;
       this.scrollUp(this.posicaoIniUp, this.posicaoFimUp);
     }
